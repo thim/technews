@@ -1,4 +1,3 @@
-import 'package:news/common/exception.dart';
 import 'package:news/domain/entities/articles.dart';
 
 abstract class NewsLocalDataSource {
