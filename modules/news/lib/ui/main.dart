@@ -36,62 +36,9 @@ class _NewsPageState extends State<NewsPage> {
         stream: presenter.data,
         builder: (ctx, snap) {
           if (snap.hasData) {
-            return Container(
-              alignment: Alignment.center,
-              color: AppColors.backgroundColor,
-              child: Container(
-                width: 960,
-                child: Column(
-                  children: [
-                    SizedBox(height: 40),
-                    Align(
-                      child: Text(formatter.format(DateTime.now()), style: AppStyle.p1().build()),
-                      alignment: Alignment.centerLeft,
-                    ),
-                    Divider(),
-                    Expanded(
-                      child: SingleChildScrollView(
-                          child: Column(children: [
-                        Text(
-                          "TECH NEWS",
-                          style: AppStyle.custom(72).normal.withHeight(1.2).build(),
-                        ),
-                        Divider(),
-                        Row(
-                          children: [
-                            Flexible(
-                              flex: 3,
-                              child: HeadPost(snap.requireData.head),
-                            ),
-                            Container(
-                              height: 500,
-                              child: VerticalDivider(
-                                thickness: 0.5,
-                              ),
-                            ),
-                            Flexible(
-                              flex: 2,
-                              child: TopArticles(snap.requireData.top3),
-                            ),
-                          ],
-                        ),
-                        Divider(
-                          indent: 100,
-                        ),
-                        SizedBox(
-                          height: 24.0,
-                        ),
-                        Text(
-                          "RECENT POSTS",
-                          style: AppStyle.h1().normal.withHeight(1.2).build(),
-                        ),
-                        RecentArticles(snap.requireData.data)
-                      ])),
-                    ),
-                  ],
-                ),
-              ),
-            );
+            final isMobile = MediaQuery.of(context).size.width < 960;
+
+            return isMobile ? MobileLayout(snap.requireData) : BigLayout(snap.requireData);
           }
 
           return Container();
@@ -103,6 +50,130 @@ class _NewsPageState extends State<NewsPage> {
         },
         tooltip: 'Refresh',
         child: Icon(Icons.refresh),
+      ),
+    );
+  }
+}
+
+class BigLayout extends StatelessWidget {
+  final MainData data;
+
+  const BigLayout(
+    this.data, {
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      alignment: Alignment.center,
+      color: AppColors.backgroundColor,
+      child: Container(
+        width: 960,
+        child: Column(
+          children: [
+            SizedBox(height: 40),
+            Align(
+              child: Text(formatter.format(DateTime.now()), style: AppStyle.p1().build()),
+              alignment: Alignment.centerLeft,
+            ),
+            Divider(),
+            Expanded(
+              child: SingleChildScrollView(
+                  child: Column(children: [
+                Text(
+                  "TECH NEWS",
+                  style: AppStyle.custom(72).normal.withHeight(1.2).build(),
+                ),
+                Divider(),
+                Row(
+                  children: [
+                    Flexible(
+                      flex: 3,
+                      child: HeadPost(data.head),
+                    ),
+                    Container(
+                      height: 500,
+                      child: VerticalDivider(
+                        thickness: 0.5,
+                      ),
+                    ),
+                    Flexible(
+                      flex: 2,
+                      child: TopArticles(data.top3),
+                    ),
+                  ],
+                ),
+                Divider(
+                  indent: 100,
+                ),
+                SizedBox(
+                  height: 24.0,
+                ),
+                Text(
+                  "RECENT POSTS",
+                  style: AppStyle.h1().normal.withHeight(1.2).build(),
+                ),
+                RecentArticles(data.data)
+              ])),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+
+class MobileLayout extends StatelessWidget {
+  final MainData data;
+
+  const MobileLayout(
+      this.data, {
+        Key? key,
+      }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      alignment: Alignment.center,
+      color: AppColors.backgroundColor,
+      child: SafeArea(
+        child: Column(
+          children: [
+            Padding(
+              padding: const EdgeInsets.fromLTRB(8.0, 0, 0, 0),
+              child: Align(
+                child: Text(formatter.format(DateTime.now()), style: AppStyle.p1().build()),
+                alignment: Alignment.centerLeft,
+              ),
+            ),
+            Divider(),
+            Expanded(
+              child: SingleChildScrollView(
+                  child: Column(children: [
+                    Text(
+                      "TECH NEWS",
+                      style: AppStyle.custom(60).normal.withHeight(1.2).build(),
+                    ),
+                    Divider(),
+                    HeadPost(data.head),
+                    TopArticles(data.top3),
+                    Divider(
+                      indent: 100,
+                    ),
+                    SizedBox(
+                      height: 24.0,
+                    ),
+                    Text(
+                      "RECENT POSTS",
+                      style: AppStyle.h1().normal.withHeight(1.2).build(),
+                    ),
+                    RecentArticles(data.data)
+                  ])),
+            ),
+          ],
+        ),
       ),
     );
   }
@@ -121,6 +192,7 @@ class TopArticles extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: ListView.separated(
+          physics: const NeverScrollableScrollPhysics(),
           shrinkWrap: true,
           itemCount: articles.length,
           separatorBuilder: (c, i) {
@@ -190,13 +262,14 @@ class RecentArticles extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ListView.builder(
+        physics: const NeverScrollableScrollPhysics(),
         shrinkWrap: true,
         itemCount: articles.length,
         itemBuilder: (c, i) {
           final item = articles[i];
           return Container(
             margin: const EdgeInsets.fromLTRB(8, 8, 8, 16),
-            height: 100,
+
             child: Row(
               mainAxisSize: MainAxisSize.max,
               children: [
@@ -225,7 +298,7 @@ class RecentArticles extends StatelessWidget {
                       maxLines: 4,
                     ),
                     SizedBox(height: 8.0),
-                    Row(
+                    Wrap(
                       children: [
                         Text(
                           item.author,

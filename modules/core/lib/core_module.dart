@@ -1,7 +1,5 @@
 import 'package:http/http.dart';
 
-import 'src/infra/env.dart';
-import 'src/infra/env_impl.dart';
 import 'src/infra/injector.dart';
 import 'src/infra/module.dart';
 import 'src/infra/network.dart';
@@ -12,7 +10,5 @@ class CoreModule implements ModuleDI {
   void registerInject(AppInject injector) {
     injector.registerSingleton<Client>(() => Client());
     injector.registerDependency<Network>(() => AppNetwork(injector()));
-
-    injector.registerSingleton<Env>(() => EnvImpl());
   }
 }

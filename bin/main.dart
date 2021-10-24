@@ -11,8 +11,6 @@ import 'package:newsapp/app_module.dart';
 void main() async {
   useModules([CoreModule(), AppModule(), NewsModule()]);
 
-  await inject<Env>().load();
-
   final repo = inject<NewsRepository>();
   try {
     final data = await repo.getData();

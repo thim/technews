@@ -1,11 +1,11 @@
 import 'dart:io';
 
-import 'env.dart';
+import '../env.dart';
 
-class EnvImpl extends Env {
+class FileEnvImpl implements Env {
   final Loader loader;
 
-  EnvImpl({String fileName = '.env', this.loader = _loadFile});
+  FileEnvImpl({String fileName = '.env', this.loader = _loadFile});
 
   bool _isInitialized = false;
   final Map<String, String> _envMap = {};

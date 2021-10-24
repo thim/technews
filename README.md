@@ -12,3 +12,17 @@ To download the dependencies from all projects, run on the root folder:
 flutter pub global activate mono_repo
 flutter pub global run mono_repo pub get
 ```
+
+To run is necessary to setup a valid key from the site: newsapi.org
+
+Flutter run:
+
+```shell
+flutter run --dart-define=APIKEY=<...>
+```
+
+Dart run:
+
+```shell
+dart --define=APIKEY=<...> bin/main.dart
+```

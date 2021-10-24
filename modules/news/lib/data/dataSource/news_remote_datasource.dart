@@ -14,11 +14,10 @@ abstract class NewsRemoteDataSource {
 
 class NewsRemoteDataSourceImpl implements NewsRemoteDataSource {
   final Network _network;
-  final Env _env;
 
-  String get _key => _env['APIKEY'];
+  static const String _key = String.fromEnvironment("APIKEY");
 
-  NewsRemoteDataSourceImpl(this._network, this._env);
+  NewsRemoteDataSourceImpl(this._network);
 
   @override
   Future<List<Article>> getData() async {
@@ -31,8 +30,8 @@ class NewsRemoteDataSourceImpl implements NewsRemoteDataSource {
         throw Exception("Invalid statusCode ${response.statusCode}");
       }
 
-      //return parseData(response.body);
-      return compute(_parseData, response.body);
+      return _parseData(response.body);
+      //return compute(_parseData, response.body);
     } catch (e, stack) {
       log("Error: $e", stackTrace: stack, name: "DataLayer");
       throw DataSourceException(e.toString());
@@ -46,7 +45,8 @@ class MockRemoteDataSourceImpl implements NewsRemoteDataSource {
   @override
   Future<List<Article>> getData() async {
     try {
-      return compute(_parseData, apiMock);
+      //return compute(_parseData, apiMock);
+      return _parseData(apiMock);
     } catch (e, stack) {
       log("Error: $e", stackTrace: stack, name: "DataLayer");
       throw DataSourceException(e.toString());

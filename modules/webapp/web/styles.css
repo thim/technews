@@ -12,3 +12,16 @@ html, body {
   padding: 20px;
   text-align: left;
 }
+
+.line {
+  font-size: 18px;
+  background-color: Lavender;
+  color: purple;
+  border: 1px solid black;
+  margin: 2px 2px 2px 2px;
+}
+
+.title {
+  font-size: 22px;
+  color: purple;
+}

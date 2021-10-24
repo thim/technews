@@ -13,11 +13,18 @@ void main() {
 }
 
 void load(Element? output) async {
-  await inject<Env>().load();
+  //await inject<Env>().load();
   final repo = inject<NewsRepository>();
   final data = await repo.getData();
 
+  output?.children.add(head());
   output?.children.addAll(data.map(newLI));
 }
 
-LIElement newLI(Article item) => LIElement()..text = item.title;
+HeadingElement head() => HeadingElement.h3()
+  ..text = 'Notícias'
+  ..classes.add('title');
+
+LIElement newLI(Article item) => LIElement()
+  ..text = item.title
+  ..classes.add('line');
