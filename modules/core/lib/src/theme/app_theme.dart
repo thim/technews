@@ -5,7 +5,6 @@ import 'app_colors.dart';
 ThemeData appTheme(BuildContext context) => ThemeData(
     primaryColor: AppColors.desire,
     primaryColorDark: AppColors.vividAuburn,
-    accentColor: AppColors.desire,
     textTheme: Theme.of(context).textTheme.apply(fontFamily: 'Newsreader'),
     inputDecorationTheme: InputDecorationTheme(
         border:
@@ -19,4 +18,4 @@ ThemeData appTheme(BuildContext context) => ThemeData(
         labelStyle: TextStyle(color: AppColors.queenBlue)),
     buttonTheme: ButtonThemeData(
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(4.0)),
-    ));
+    ), colorScheme: ColorScheme.fromSwatch().copyWith(secondary: AppColors.desire));
