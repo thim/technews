@@ -2,6 +2,8 @@
 
 ---
 
+[![Flutter](https://github.com/thim/technews/actions/workflows/flutter.yml/badge.svg)](https://github.com/thim/technews/actions/workflows/flutter.yml)
+
 A simple project to demonstrate Clean Architecture and modular organization.
 
 ### Build command

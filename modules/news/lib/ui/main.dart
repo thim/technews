@@ -20,13 +20,17 @@ class NewsPage extends StatefulWidget {
 }
 
 class _NewsPageState extends State<NewsPage> {
-  final Completer<List<Article>> completer = Completer();
   final presenter = MainPresenter();
 
   @override
   void initState() {
     super.initState();
     presenter.load();
+  }
+
+  dispose() async {
+    await presenter.dispose();
+    super.dispose();
   }
 
   @override
@@ -124,14 +128,13 @@ class BigLayout extends StatelessWidget {
   }
 }
 
-
 class MobileLayout extends StatelessWidget {
   final MainData data;
 
   const MobileLayout(
-      this.data, {
-        Key? key,
-      }) : super(key: key);
+    this.data, {
+    Key? key,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -142,7 +145,7 @@ class MobileLayout extends StatelessWidget {
         child: Column(
           children: [
             Padding(
-              padding: const EdgeInsets.fromLTRB(8.0, 0, 0, 0),
+              padding: const EdgeInsets.fromLTRB(16.0, 0, 0, 0),
               child: Align(
                 child: Text(formatter.format(DateTime.now()), style: AppStyle.p1().build()),
                 alignment: Alignment.centerLeft,
@@ -152,25 +155,25 @@ class MobileLayout extends StatelessWidget {
             Expanded(
               child: SingleChildScrollView(
                   child: Column(children: [
-                    Text(
-                      "TECH NEWS",
-                      style: AppStyle.custom(60).normal.withHeight(1.2).build(),
-                    ),
-                    Divider(),
-                    HeadPost(data.head),
-                    TopArticles(data.top3),
-                    Divider(
-                      indent: 100,
-                    ),
-                    SizedBox(
-                      height: 24.0,
-                    ),
-                    Text(
-                      "RECENT POSTS",
-                      style: AppStyle.h1().normal.withHeight(1.2).build(),
-                    ),
-                    RecentArticles(data.data)
-                  ])),
+                Text(
+                  "TECH NEWS",
+                  style: AppStyle.custom(60).normal.withHeight(1.2).build(),
+                ),
+                Divider(),
+                HeadPost(data.head),
+                TopArticles(data.top3),
+                Divider(
+                  indent: 100,
+                ),
+                SizedBox(
+                  height: 24.0,
+                ),
+                Text(
+                  "RECENT POSTS",
+                  style: AppStyle.h1().normal.withHeight(1.2).build(),
+                ),
+                RecentArticles(data.data)
+              ])),
             ),
           ],
         ),
@@ -269,7 +272,6 @@ class RecentArticles extends StatelessWidget {
           final item = articles[i];
           return Container(
             margin: const EdgeInsets.fromLTRB(8, 8, 8, 16),
-
             child: Row(
               mainAxisSize: MainAxisSize.max,
               children: [
@@ -363,7 +365,7 @@ class HeadPost extends StatelessWidget {
             )
           ]),
           Padding(
-            padding: const EdgeInsets.fromLTRB(0, 16.0, 0, 0),
+            padding: const EdgeInsets.fromLTRB(8.0, 16.0, 8.0, 0),
             child: Text(
               article.title,
               style: AppStyle.h1().medium.build(),
